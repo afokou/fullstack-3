@@ -12,7 +12,7 @@ participant server
     deactivate server
     
     Note right of browser: The browser sends the note the user typed to the server
-    Note left of server: The server adds the note to its database and redirects the browser to the notes page
+    Note left of server: The server adds the note to its database and returns a redirect response
 
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
     activate server
