@@ -19,5 +19,5 @@ participant server
     server-->>browser: HTML code
     deactivate server
     
-    Note right of browsers: The browser loads the page it was redirected to, showing the note
+    Note right of browser: The browser loads the page it was redirected to, showing the note
 ```
