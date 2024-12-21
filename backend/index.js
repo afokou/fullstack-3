@@ -25,8 +25,16 @@ mongoose.set('strictQuery',false)
 mongoose.connect(url)
 
 const personSchema = new mongoose.Schema({
-  name: String,
-  number: String // String in case it starts with 0
+  name: {
+    type: String,
+    minLength: 3,
+    required: true
+  },
+  number: {
+    type: String, // String in case it starts with 0
+    minLength: 8,
+    required: true
+  }
 })
 personSchema.set('toJSON', {
   transform: (document, returnedObject) => {
@@ -128,6 +136,8 @@ const errorHandler = (error, request, response, next) => {
 
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
   }
 
   next(error)
