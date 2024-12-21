@@ -5,8 +5,16 @@ const getAll = () => {
   return axios.get(baseUrl)
 }
 
-const create = newObject => {
-  return axios.post(baseUrl, newObject)
+const create = async newObject => {
+  try {
+    return await axios.post(baseUrl, newObject)
+  } catch (error) {
+    if (error.response && error.response.status === 409) {
+      const existingPersonId = error.response.data.existingPersonId
+      return await axios.put(`${baseUrl}/${existingPersonId}`, newObject)
+    }
+    throw error
+  }
 }
 
 const update = (id, newObject) => {
