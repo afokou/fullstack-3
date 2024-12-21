@@ -65,6 +65,7 @@ app.post('/api/persons', (request, response, next) => {
   Person.findOne({ name: body.name }).then(existingPerson => {
     if (existingPerson) {
       return response.status(409).json({
+        existingPersonId: existingPerson.id,
         error: 'the person name must be unique'
       })
     }
@@ -78,6 +79,25 @@ app.post('/api/persons', (request, response, next) => {
       response.json(savedPerson)
     }).catch(error => next(error))
   }).catch(error => next(error))
+})
+
+app.put('/api/persons/:id', (request, response, next) => {
+  const body = request.body
+
+  const person = {
+    name: body.name,
+    number: body.number
+  }
+
+  Person.findByIdAndUpdate(request.params.id, person, { new: true, runValidators: true, context: 'query' })
+    .then(updatedPerson => {
+      if (updatedPerson) {
+        response.json(updatedPerson)
+      } else {
+        response.status(404).end()
+      }
+    })
+    .catch(error => next(error))
 })
 
 app.get('/info', (request, response) => {
