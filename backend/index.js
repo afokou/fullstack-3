@@ -19,7 +19,7 @@ app.use(logger)
 app.use(cors())
 
 const mongoose = require('mongoose')
-const url = process.env.MONGODB_URI;
+const url = process.env.MONGODB_URI
 
 mongoose.set('strictQuery',false)
 mongoose.connect(url)
@@ -36,7 +36,7 @@ const personSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: function(v) {
-        return /^\d{2,3}-\d+$/.test(v);
+        return /^\d{2,3}-\d+$/.test(v)
       },
       message: props => `${props.value} is not a valid phone number!`
     },
@@ -63,8 +63,8 @@ app.get('/api/persons', (request, response) => {
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
-  Person.findByIdAndDelete(request.params.id).then(result => {
-      response.status(204).end()
+  Person.findByIdAndDelete(request.params.id).then(() => {
+    response.status(204).end()
   }).catch(error => next(error))
 })
 
@@ -118,10 +118,10 @@ app.get('/info', (request, response) => {
   const date = new Date()
   Person.find({}).then(persons => {
     response.send(`<p>Phonebook has info for ${persons.length} people</p><p>${date}</p>`)
-  });
+  })
 })
 
-app.get("/api/persons/:id", (request, response, next) => {
+app.get('/api/persons/:id', (request, response, next) => {
   Person.findById(request.params.id).then(person => {
     if (person) {
       response.json(person)
