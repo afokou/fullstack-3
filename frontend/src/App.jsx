@@ -51,9 +51,10 @@ const App = () => {
             }, 5000)
           })
           .catch(error => {
-            console.error("Failed to update person: ", error);
+            const errorMsg = error.response.data.error;
+            console.error("Failed to update person: ", errorMsg);
 
-            setErrorMessage(`Information of ${newPerson.name} has already been removed from server`)
+            setErrorMessage(errorMsg)
             setTimeout(() => {
               setErrorMessage(null)
             }, 5000)
@@ -66,6 +67,14 @@ const App = () => {
         setSuccessMessage(`Added ${newPerson.name}`)
         setTimeout(() => {
           setSuccessMessage(null)
+        }, 5000)
+      }).catch(error => {
+        const errorMsg = error.response.data.error;
+        console.error("Failed to update person: ", errorMsg);
+
+        setErrorMessage(errorMsg)
+        setTimeout(() => {
+          setErrorMessage(null)
         }, 5000)
       })
       setNewName('')
